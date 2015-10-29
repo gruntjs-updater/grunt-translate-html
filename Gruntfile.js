@@ -28,24 +28,35 @@ module.exports = function(grunt) {
       tests: ['tmp']
     },
 
-    // Configuration to be run (and then tested).
-    translate_html: {
-      default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
-      },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!'
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
+    // Copy files for the test setup:
+    copy: {
+      main: {
+        files: [
+          {
+            src: 'test/expected/*',
+            dest: 'tmp/',
+            expand: true,
+            flatten: true,
+            filter: 'isFile'
+          }
+        ]
       }
+    },
+
+    log: {
+      foo: [1, 2, 3],
+      bar: 'hello world',
+      baz: false
+    },
+
+    // Configuration to be run (and then tested).
+    translate: {
+      options: {
+        locales: ['en_US', 'de_DE']
+      },
+      foo: [1, 2, 3],
+      bar: 'hello world',
+      baz: false
     },
 
     // Unit tests.
@@ -61,11 +72,13 @@ module.exports = function(grunt) {
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-locales');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'translate_html', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'copy', 'translate', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

@@ -22,7 +22,7 @@ var grunt = require('grunt');
     test.ifError(value)
 */
 
-exports.translate_html = {
+exports.translate = {
   setUp: function(done) {
     // setup here if necessary
     done();
