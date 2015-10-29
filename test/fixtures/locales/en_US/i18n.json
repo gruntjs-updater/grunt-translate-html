@@ -1,0 +1,14 @@
+{
+  "This is a header": {
+    "value": "This is a header",
+    "files": [
+      "src/html/index.html"
+    ]
+  },
+  "This is another paragraph": {
+    "value": "This is another paragraph",
+    "files": [
+      "src/html/index.html"
+    ]
+  }
+}

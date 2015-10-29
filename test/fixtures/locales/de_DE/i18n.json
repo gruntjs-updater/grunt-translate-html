@@ -1,0 +1,14 @@
+{
+  "This is a header": {
+    "value": "Dr. Struessal",
+    "files": [
+      "src/html/index.html"
+    ]
+  },
+  "This is another paragraph": {
+    "value": "Auchtung! A paragraph!",
+    "files": [
+      "src/html/index.html"
+    ]
+  }
+}
