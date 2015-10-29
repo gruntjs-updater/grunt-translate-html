@@ -1,3 +1,5 @@
+[![Build Status](https://ci.tagcreativestudio.com/buildStatus/icon?job=grunt-translate-html)](https://ci.tagcreativestudio.com/job/grunt-translate-html/)
+
 # grunt-translate-html
 
 > An HTML preprocessor that translates strings from one language to another
