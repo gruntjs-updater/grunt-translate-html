@@ -43,20 +43,16 @@ module.exports = function(grunt) {
       }
     },
 
-    log: {
-      foo: [1, 2, 3],
-      bar: 'hello world',
-      baz: false
-    },
-
     // Configuration to be run (and then tested).
     translate: {
       options: {
-        locales: ['en_US', 'de_DE']
+        locale: 'en_US',
+        pathToLocFolders: 'test/fixtures/locales/'
       },
-      foo: [1, 2, 3],
-      bar: 'hello world',
-      baz: false
+        files: {
+          src: 'test/fixtures/**/*.html',
+          dest: 'tmp/'
+        }
     },
 
     // Unit tests.
