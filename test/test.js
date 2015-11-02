@@ -69,8 +69,6 @@ describe('Mocha Test Suite', function () {
 		
 		describe('check if the output html matches the expected result', function() {
 			it('output should match expected html', function() {
-				console.log('output: ', outContent);
-				console.log('expected: ', expContent);
 				assert.equal(expContent, outContent);
 			});
 		})
