@@ -10,6 +10,7 @@ var expContent = "";
 
 
 describe('Mocha Test Suite', function () {
+	this.timeout(15000);
 	describe('hooks', function() {
 		before(function (done) {
 			var filePath = path.join(__dirname, '../tmp/test/fixtures/index.html');
@@ -68,8 +69,9 @@ describe('Mocha Test Suite', function () {
 		});
 		
 		describe('check if the output html matches the expected result', function() {
-			it('output should match expected html', function() {
+			it('output should match expected html', function(done) {
 				assert.equal(expContent, outContent);
+				done();
 			});
 		})
 	});
