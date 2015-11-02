@@ -12,6 +12,7 @@ module.exports = function(grunt) {
   'use strict';
 
   // variables for parsing through HTML document
+    // var grunt = require('grunt');
     var htmlparser = require("htmlparser2");
     var singletonTags = ["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "link", "meta", "param", "source"];
     var outputStr = "<!DOCTYPE html>";
@@ -20,6 +21,7 @@ module.exports = function(grunt) {
     var destPath = '';
     var transObj = {translation: ''};
     var trans = transObj["translation"];
+    var returnObj = {};
     
     // Tag we use while parsing to swap out translations
     var currentTag = {
@@ -114,6 +116,10 @@ module.exports = function(grunt) {
        
         parse(data);
     }
+    
+    returnObj.testPrint = function() {
+        console.log('test print fired');
+    }
   
     //grunt task
     grunt.registerMultiTask('translate', function(arg1) {
@@ -146,4 +152,5 @@ module.exports = function(grunt) {
             });
         });
     });
+    
 }

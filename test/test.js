@@ -1,37 +1,79 @@
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
-var translateHtml = require('../tasks/translate.js');
 var validator = require('html-validator');
-var validatorOpts = {format: 'text'};
-var htmlContent = "";
+var inValidatorOpts  = {format: 'text'};
+var outValidatorOpts = {format: 'text'};
+var expValidatorOpts = {format: 'text'};
+var outContent = "";
+var expContent = "";
 
-describe('My epic test', function () {
+
+describe('Mocha Test Suite', function () {
 	describe('hooks', function() {
 		before(function (done) {
-			var filePath = path.join(__dirname, '/fixtures/index.html');
+			var filePath = path.join(__dirname, '../tmp/test/fixtures/index.html');
 			fs.readFile(filePath, 'utf8', function (err, data) {
 				if (!err) {
-					htmlContent = data;
-					validatorOpts.data = data;
+					inValidatorOpts.data = data;
 				} else {
-					console.log('Error getting html content: ', err);
+					console.log('Error getting input html content: ', err);
 				}
-				
-				done();
 			});
+			filePath = path.join(__dirname, '../tmp/output/test/fixtures/index.html');
+			fs.readFile(filePath, 'utf8', function (err, data) {
+				if (!err) {
+					outValidatorOpts.data = data;
+					outContent = data;
+				} else {
+					console.log('Error getting output html content: ', err);
+				}
+			});
+			filePath = path.join(__dirname, '../tmp/test/expected/index.html');
+			fs.readFile(filePath, 'utf8', function(err, data) {
+				if (!err) {
+					expValidatorOpts.data = data;
+					expContent = data;
+					done();
+				} else {
+					console.log('Error getting expected html content: ', err);
+				}
+			})
 		});
 		
-		describe('check for valid html import', function() {
+		describe('check for valid html input', function() {
 			it('should be valid html', function(done) {
-				validator(validatorOpts, function(err, data) {
-					console.log('err: ', err);
+				validator(inValidatorOpts, function(err, data) {
+					if (err) {
+						console.log('ERROR: ', err);
+						assert.equal(true, false);					
+					}
 					assert.equal(null, err);
-					
 					done();	
 				});
 			});
 		});
-	});	
+		
+		describe('check for valid html output', function() {
+			it('should be valid html', function(done) {
+				validator(outValidatorOpts, function(err, data) {
+					if (err) {
+						console.log('ERROR: ', err);
+						assert.equal(true, false);
+					}
+					assert.equal(null, err);
+					done();
+				});
+			});
+		});
+		
+		describe('check if the output html matches the expected result', function() {
+			it('output should match expected html', function() {
+				console.log('output: ', outContent);
+				console.log('expected: ', expContent);
+				assert.equal(expContent, outContent);
+			});
+		})
+	});
 });
 

@@ -33,11 +33,9 @@ module.exports = function(grunt) {
       main: {
         files: [
           {
-            src: 'test/expected/*',
+            src: 'test/**',
             dest: 'tmp/',
-            expand: true,
-            flatten: true,
-            filter: 'isFile'
+            expand: true
           }
         ]
       }
@@ -46,18 +44,13 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     translate: {
       options: {
-        locale: 'en_US',
-        pathToLocFolders: 'test/fixtures/locales/'
+        locale: 'de_DE',
+        pathToLocFolders: 'tmp/test/fixtures/locales/'
       },
         files: {
           src: 'test/fixtures/**/*.html',
-          dest: 'tmp/'
+          dest: 'tmp/output/'
         }
-    },
-
-    // Unit tests.
-    nodeunit: {
-      tests: ['test/*_test.js']
     },
 
     // Mocha tests
@@ -86,7 +79,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'copy', 'translate']);
+  grunt.registerTask('test', ['clean', 'copy', 'translate', 'mochaTest']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'mochaTest']);

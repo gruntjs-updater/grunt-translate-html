@@ -3,4 +3,4 @@ var gruntFile = require('./Gruntfile.js');
 
 gruntFile(grunt);
 
-grunt.tasks(['translate']);
+grunt.tasks(['mochaTest']);
