@@ -20,22 +20,6 @@ var goodJSONErrors;
 var badJSONErrors;
 
 var v = new Validator();
-
-// var instance = {
-//   "This is a header": {
-//     "value": "Dies ist eine Kopf",
-//     "files": [
-//       "src/html/index.html"
-//     ]
-//   },
-//   "This is another paragraph": {
-//     "value": 42,
-//     "files": [
-//       "src/html/index.html"
-//     ]
-//   }
-// };
-
 var schema = {
 	'id': '/locale',
 	'type': 'object',
@@ -51,8 +35,13 @@ var schema = {
 
 };
 
-// Get all HTML to be tested
-
+/**
+ * 
+ * Before we run tests, we load all tested HTML and JSON. We then use html5-lint 
+ * and jsonschema to validate source files and push any errors into respective error
+ * arrays for testing in the test suite.
+ * 
+ */
 var prepareTests = function(callback) { 
 
 	var filePath = path.join(__dirname, '../tmp/test/fixtures/index.html');
@@ -143,12 +132,10 @@ var prepareTests = function(callback) {
 
 };
 
-// Generate error arrays for input, output, and invalid HTML
-
 describe('Mocha Test Suite', function () {
 	
 	// Timeout increased to account for testing in the server
-	this.timeout(10000);
+	this.timeout(25000);
 	
 	describe('hooks', function() {
 		
