@@ -14,14 +14,14 @@ module.exports = function(grunt) {
   // variables for parsing through HTML document
     // var grunt = require('grunt');
     var htmlparser = require("htmlparser2");
+    
     var singletonTags = ["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "link", "meta", "param", "source"];
     var outputStr = "<!DOCTYPE html>";
     var options = {locale: 'en_US'};
     var dest = 'translated-html';
     var destPath = '';
     var transObj = {translation: ''};
-    var trans = transObj["translation"];
-    var returnObj = {};
+    var trans = transObj.translation;
     
     // Tag we use while parsing to swap out translations
     var currentTag = {
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
             destPath = dest + destPath;
             var wasWritten = grunt.file.write(destPath, outputStr);
             if (wasWritten) {
-                console.log('wrote ' + destPath + 'successfully');
+                console.log('wrote ' + destPath + ' successfully');
             } else {
                 console.log('Error: ' + destPath + ' was not written successfully');
             }
@@ -112,14 +112,10 @@ module.exports = function(grunt) {
             console.log('Error: locale JSON file not found. Check the locale directory path and locale name.');
         }
         transObj = {translation: grunt.file.readJSON(pathToJSON)};
-        trans = transObj['translation'];
+        trans = transObj.translation;
        
         parse(data);
-    }
-    
-    returnObj.testPrint = function() {
-        console.log('test print fired');
-    }
+    };
   
     //grunt task
     grunt.registerMultiTask('translate', function(arg1) {
@@ -153,4 +149,4 @@ module.exports = function(grunt) {
         });
     });
     
-}
+};
