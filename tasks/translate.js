@@ -1,5 +1,5 @@
 /*
- * grunt-translate-html
+ * Grunt-translate-html
  * TODO: - Add public facing Repo, copyright info
  *
  * Copyright (c) 2015 Josh Winskill, Tag Creative
@@ -14,31 +14,32 @@ module.exports = function(grunt) {
   /** Dependencies */
   var htmlparser = require('htmlparser2');
 
-  /** singletonTags array - tags that should self close when parsed */
+
+  /** SingletonTags array - tags that should self close when parsed */
   var singletonTags = ['area', 'base', 'br', 'col', 'command',
     'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source',];
-    
-  /** outputStr string - the string to ultimately be output as HTML. Must
+
+  /** OutputStr string - the string to ultimately be output as HTML. Must
    * start with a doctype, as the parser does not provide this */  
   var outputStr = '<!DOCTYPE html>';
-  
-  /** options object - default options for grunt task */
+
+  /** Options object - default options for grunt task */
   var options = {locale: 'en_US'};
-  
-  /** dest string - default location for translated HTML */
+
+  /** Dest string - default location for translated HTML */
   var dest = 'translated-html';
-  
-  /** destPath string - user added location for translated HTML */
+
+  /** DestPath string - user added location for translated HTML */
   var destPath = '';
-  
-  /** transObj object - a JSON wrapper that will hold the translation key-
+
+  /** TransObj object - a JSON wrapper that will hold the translation key-
    * value paris */
-  var transObj = {translation: ''};
-  
-  /** trans object - the JSON key-value pairs */
+  var transObj = { translation: '' };
+
+  /** Trans object - the JSON key-value pairs */
   var trans = transObj.translation;
-  
-  /** currentTag object - the tag used to swap out one translation string
+
+  /** CurrentTag object - the tag used to swap out one translation string
    * with another */
   var currentTag = {
     convertToLocal: false,
@@ -49,11 +50,11 @@ module.exports = function(grunt) {
     },
   };
 
-  /** parser object - the parser object that fires events in order to
+  /** Parser object - the parser object that fires events in order to
    * build our new HTML string */
   var parser = new htmlparser.Parser({
 
-    /** onopentag function - the function called on encountering an open
+    /** Onopentag function - the function called on encountering an open
      * HTML tag */
     onopentag: function(name, attributes) {
 
@@ -68,31 +69,31 @@ module.exports = function(grunt) {
       outputStr = outputStr.concat('>');
 
       if (attributes.hasOwnProperty('localize') ||
-      attributes.hasOwnProperty('data-localize')) {
+        attributes.hasOwnProperty('data-localize')) {
         currentTag.type = name;
         currentTag.convertToLocal = true;
       }
     },
 
-    /** ontext function - the function called on encountering text */
+    /** Ontext function - the function called on encountering text */
     ontext: function(text) {
 
       if (currentTag.convertToLocal) {
 
-        /** text is swapped to localized value here */
+        /** Text is swapped to localized value here */
         if (trans[text]['value']) {
           outputStr = outputStr.concat(trans[text]['value']);
         }
 
       } else {
-        
+
         outputStr = outputStr.concat(text);
-      
+
       }
 
     },
 
-    /** onclosetag function - the function called on encountering a close 
+    /** Onclosetag function - the function called on encountering a close
      * tag */
     onclosetag: function(name) {
 
@@ -105,13 +106,13 @@ module.exports = function(grunt) {
       }
     },
 
-    /** oncomment function - the function called on encountering a
+    /** Oncomment function - the function called on encountering a
      * comment tag */
     oncomment: function(data) {
       outputStr = outputStr.concat('<!--' + data + '-->');
     },
 
-    /** onend function - the function called when parsing has been
+    /** Onend function - the function called when parsing has been
      * completed. After parsing is finished, the file is written to
      * the specified path */
     onend: function() {
@@ -128,9 +129,9 @@ module.exports = function(grunt) {
   }, {decodeEntities: true});
 
   /** Helper Functions */
-  
+
   /**
-   * parse function - a helper function to parse the data
+   * Parse function - a helper function to parse the data
    * @param data string - the raw HTML data returned from Grunt's file system
    */
   var parse = function(data) {
@@ -139,7 +140,7 @@ module.exports = function(grunt) {
   };
 
   /**
-   * translate - a helper function to grab the JSON translations
+   * Translate - a helper function to grab the JSON translations
    * and call the parse function
    * @param locale string - the string used to represent the appropriate
    * locale, i.e. 'en_US'
@@ -157,15 +158,14 @@ module.exports = function(grunt) {
     parse(data);
   };
 
-  /** 
+  /**
    * The grunt task that will be exposed to the user
    * @param arg1 string - an optional command line argument that signifies
    * the locale, i.e. 'en_US'
    */
-  grunt.registerMultiTask('translate', function(arg1) {
-    if (arg1) {
-      options.locale = arg1;
-    } else if (this.options().locale) {
+  grunt.registerMultiTask('translate', function() {
+
+    if (this.options().locale) {
       options.locale = this.options().locale;
     }
     if (this.files[0]['dest']) {

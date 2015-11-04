@@ -10,5 +10,11 @@
     "files": [
       "src/html/index.html"
     ]
+  },
+  "I remember meeting you on bleaker street": {
+    "value": "Ich erinnere mich, Sie kennen zu lernen auf düsterer Straße",
+    "files": [
+      "src/html/index.html"
+    ]
   }
 }
