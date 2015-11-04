@@ -16,26 +16,31 @@ module.exports = function(grunt) {
       all: [
         'Gruntfile.js',
         'tasks/*.js',
-        'test/test.js'
+        'test/test.js',
       ],
       options: {
-        jshintrc: '.jshintrc'
-      }
+        jshintrc: '.jshintrc',
+      },
     },
-    
+
     // Check code style
     jscs: {
-      src: 'tasks/*.js',
+      src: [
+        'tasks/*.js',
+        'Gruntfile.js',
+        'test/test.js',
+      ],
       options: {
-        config: ".jscsrc",
+        config: '.jscsrc',
         esnext: true,
-        verbose: true
-      }
+        verbose: true,
+        fix: true,
+      },
     },
 
     // Before generating any new files, remove any previously-created files.
     clean: {
-      tests: ['tmp']
+      tests: ['tmp'],
     },
 
     // Copy files for the test setup:
@@ -45,35 +50,35 @@ module.exports = function(grunt) {
           {
             src: 'test/**',
             dest: 'tmp/',
-            expand: true
-          }
-        ]
-      }
+            expand: true,
+          },
+        ],
+      },
     },
 
     // Configuration to be run (and then tested).
     translate: {
       options: {
         locale: 'de_DE',
-        pathToLocFolders: 'tmp/test/fixtures/locales/'
+        pathToLocFolders: 'tmp/test/fixtures/locales/',
       },
-        files: {
+      files: {
           src: 'test/fixtures/**/*.html',
-          dest: 'tmp/output/'
-        }
+          dest: 'tmp/output/',
+        },
     },
 
     // Mocha tests
     mochaTest: {
       test: {
         options: {
-          reporter: 'spec',          
-          quiet: false, // Optionally suppress output to standard out (defaults to false)
-          clearRequireCache: false, // Optionally clear the require cache before running tests (defaults to false)
+          reporter: 'spec',
+          quiet: false,
+          clearRequireCache: false,
         },
-        src: ['test/**/*.js']
-      }
-    }
+        src: ['test/**/*.js'],
+      },
+    },
 
   });
 
@@ -90,7 +95,8 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'copy', 'translate', 'mochaTest', 'clean']);
+  grunt.registerTask('test', ['clean', 'copy',
+    'translate', 'mochaTest', 'clean',]);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'mochaTest']);
