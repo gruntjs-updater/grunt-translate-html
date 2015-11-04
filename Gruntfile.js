@@ -16,10 +16,20 @@ module.exports = function(grunt) {
       all: [
         'Gruntfile.js',
         'tasks/*.js',
-        '<%= nodeunit.tests %>'
+        'test/test.js'
       ],
       options: {
         jshintrc: '.jshintrc'
+      }
+    },
+    
+    // Check code style
+    jscs: {
+      src: 'tasks/*.js',
+      options: {
+        config: ".jscsrc",
+        esnext: true,
+        verbose: true
       }
     },
 
@@ -76,6 +86,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-locales');
   grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-jscs');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.

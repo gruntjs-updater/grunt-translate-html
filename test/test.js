@@ -126,7 +126,7 @@ var prepareTests = function(callback) {
 			badJSON = JSON.parse(data);
 			badJSONErrors = v.validate(badJSON, schema);
 		} else {
-			console.log('Error getting valid JSON content', err)
+			console.log('Error getting valid JSON content', err);
 		}
 	});
 
