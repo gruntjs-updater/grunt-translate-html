@@ -188,7 +188,7 @@ describe('Mocha Test Suite', function() {
 
     describe('check invalid html input for errors', function() {
       it('should be invalid html', function() {
-        assert.notEqual(0, badErrors.length);
+        assert.equal(13, badErrors.length);
       });
     });
 
@@ -200,9 +200,7 @@ describe('Mocha Test Suite', function() {
 
     describe('check invalid JSON locale file for errors', function() {
       it('should contain errors', function() {
-        console.log('error count: ', badJSONErrors.errors.length);
-        
-        assert.notEqual(0, badJSONErrors.errors.length);
+        assert.equal(1, badJSONErrors.errors.length);
       });
     });
 
