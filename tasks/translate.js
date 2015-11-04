@@ -1,6 +1,6 @@
 /*
  * grunt-translate-html
- * https://github.com/Josh/grunt plugin
+ * TODO: - Add public facing Repo, copyright info
  *
  * Copyright (c) 2015 Josh Winskill, Tag Creative
  * Licensed under the MIT license.
@@ -11,19 +11,35 @@ module.exports = function(grunt) {
 
   'use strict';
 
-  // Variables for parsing through HTML document
+  /** Dependencies */
   var htmlparser = require('htmlparser2');
 
+  /** singletonTags array - tags that should self close when parsed */
   var singletonTags = ['area', 'base', 'br', 'col', 'command',
     'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source',];
+    
+  /** outputStr string - the string to ultimately be output as HTML. Must
+   * start with a doctype, as the parser does not provide this */  
   var outputStr = '<!DOCTYPE html>';
+  
+  /** options object - default options for grunt task */
   var options = {locale: 'en_US'};
+  
+  /** dest string - default location for translated HTML */
   var dest = 'translated-html';
+  
+  /** destPath string - user added location for translated HTML */
   var destPath = '';
+  
+  /** transObj object - a JSON wrapper that will hold the translation key-
+   * value paris */
   var transObj = {translation: ''};
+  
+  /** trans object - the JSON key-value pairs */
   var trans = transObj.translation;
-
-  // Tag we use while parsing to swap out translations
+  
+  /** currentTag object - the tag used to swap out one translation string
+   * with another */
   var currentTag = {
     convertToLocal: false,
     type: '',
@@ -33,9 +49,12 @@ module.exports = function(grunt) {
     },
   };
 
-  // Parser
+  /** parser object - the parser object that fires events in order to
+   * build our new HTML string */
   var parser = new htmlparser.Parser({
 
+    /** onopentag function - the function called on encountering an open
+     * HTML tag */
     onopentag: function(name, attributes) {
 
       outputStr = outputStr.concat('<' + name);
@@ -55,23 +74,26 @@ module.exports = function(grunt) {
       }
     },
 
+    /** ontext function - the function called on encountering text */
     ontext: function(text) {
 
       if (currentTag.convertToLocal) {
 
-        // Localize text
+        /** text is swapped to localized value here */
         if (trans[text]['value']) {
           outputStr = outputStr.concat(trans[text]['value']);
         }
 
       } else {
-
+        
         outputStr = outputStr.concat(text);
-
+      
       }
 
     },
 
+    /** onclosetag function - the function called on encountering a close 
+     * tag */
     onclosetag: function(name) {
 
       if (singletonTags.indexOf(name) > -1) {
@@ -83,10 +105,15 @@ module.exports = function(grunt) {
       }
     },
 
+    /** oncomment function - the function called on encountering a
+     * comment tag */
     oncomment: function(data) {
       outputStr = outputStr.concat('<!--' + data + '-->');
     },
 
+    /** onend function - the function called when parsing has been
+     * completed. After parsing is finished, the file is written to
+     * the specified path */
     onend: function() {
       destPath = dest + destPath;
       var wasWritten = grunt.file.write(destPath, outputStr);
@@ -100,15 +127,27 @@ module.exports = function(grunt) {
 
   }, {decodeEntities: true});
 
-
-  // Helper functions
+  /** Helper Functions */
+  
+  /**
+   * parse function - a helper function to parse the data
+   * @param data string - the raw HTML data returned from Grunt's file system
+   */
   var parse = function(data) {
     parser.write(data);
     parser.end();
   };
 
-  var translate = function(loc, pathToJSON, data) {
-    pathToJSON = pathToJSON + loc + '/i18n.json';
+  /**
+   * translate - a helper function to grab the JSON translations
+   * and call the parse function
+   * @param locale string - the string used to represent the appropriate
+   * locale, i.e. 'en_US'
+   * @param pathToJSON string - the path to the locale folders' root directory
+   * @param data string - the raw HTML data returned from Grunt's file system
+   */
+  var translate = function(locale, pathToJSON, data) {
+    pathToJSON = pathToJSON + locale + '/i18n.json';
     if (!grunt.file.exists(pathToJSON)) {
       console.log('Error: locale JSON file not found.');
     }
@@ -118,7 +157,11 @@ module.exports = function(grunt) {
     parse(data);
   };
 
-  // Grunt task
+  /** 
+   * The grunt task that will be exposed to the user
+   * @param arg1 string - an optional command line argument that signifies
+   * the locale, i.e. 'en_US'
+   */
   grunt.registerMultiTask('translate', function(arg1) {
     if (arg1) {
       options.locale = arg1;
