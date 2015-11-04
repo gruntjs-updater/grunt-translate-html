@@ -6,14 +6,12 @@
  * Licensed under the MIT license.
  */
 
-
 module.exports = function(grunt) {
 
   'use strict';
 
   /** Dependencies */
   var htmlparser = require('htmlparser2');
-
 
   /** SingletonTags array - tags that should self close when parsed */
   var singletonTags = ['area', 'base', 'br', 'col', 'command',
@@ -63,9 +61,20 @@ module.exports = function(grunt) {
       for (var propertyName in attributes) {
         outputStr = outputStr.concat(' ' + propertyName);
         if (attributes[propertyName]) {
+          /** If the property is lang, apply the appropriate locale */
+          if (propertyName === 'lang') {
+            var langCode = attributes[propertyName] = options.locale;
+            if (langCode.indexOf('_') !== -1) {
+              langCode = langCode.slice(0, langCode.indexOf('_'));
+            }
+
+            attributes[propertyName] = langCode;
+          }
+
           outputStr = outputStr.concat('="' + attributes[propertyName] + '"');
         }
       }
+
       outputStr = outputStr.concat('>');
 
       if (attributes.hasOwnProperty('localize') ||
@@ -123,6 +132,7 @@ module.exports = function(grunt) {
       } else {
         console.log('Error: ' + destPath + ' was not written successfully');
       }
+
       outputStr = '<!DOCTYPE html>';
     },
 
@@ -152,6 +162,7 @@ module.exports = function(grunt) {
     if (!grunt.file.exists(pathToJSON)) {
       console.log('Error: locale JSON file not found.');
     }
+
     transObj = {translation: grunt.file.readJSON(pathToJSON)};
     trans = transObj.translation;
 
@@ -168,9 +179,11 @@ module.exports = function(grunt) {
     if (this.options().locale) {
       options.locale = this.options().locale;
     }
+
     if (this.files[0]['dest']) {
       dest = this.files[0]['dest'];
     }
+
     if (!this.options().pathToLocFolders) {
       console.log('Error: Specify the directory for your locale folders');
       return;

@@ -132,7 +132,6 @@ var prepareTests = function(callback) {
 
   });
 
-
   filePath = path.join(__dirname,
     '../tmp/test/fixtures/locales/de_DE/i18n.json');
   fs.readFile(filePath, 'utf8', function(err, data) {
