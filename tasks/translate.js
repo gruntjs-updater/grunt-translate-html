@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 
   /** SingletonTags array - tags that should self close when parsed */
   var singletonTags = ['area', 'base', 'br', 'col', 'command',
-    'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source',];
+    'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source'];
 
   /** OutputStr string - the string to ultimately be output as HTML. Must
    * start with a doctype, as the parser does not provide this */  
@@ -125,10 +125,14 @@ module.exports = function(grunt) {
      * completed. After parsing is finished, the file is written to
      * the specified path */
     onend: function() {
+      
       destPath = dest + destPath;
       var wasWritten = grunt.file.write(destPath, outputStr);
+      
       if (wasWritten) {
+        
         console.log('wrote ' + destPath + ' successfully');
+      
       } else {
         console.log('Error: ' + destPath + ' was not written successfully');
       }
@@ -159,6 +163,7 @@ module.exports = function(grunt) {
    */
   var translate = function(locale, pathToJSON, data) {
     pathToJSON = pathToJSON + locale + '/i18n.json';
+    
     if (!grunt.file.exists(pathToJSON)) {
       console.log('Error: locale JSON file not found.');
     }

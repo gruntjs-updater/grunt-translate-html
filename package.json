@@ -39,7 +39,7 @@
     "install": "^0.1.8",
     "jsonschema": "^1.0.2",
     "mocha": "^2.3.3",
-    "npm": "^3.3.9",
+    "npm": "^3.3.9"
   },
   "peerDependencies": {
     "grunt": "~0.4.5"
