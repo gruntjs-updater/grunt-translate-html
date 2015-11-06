@@ -1,12 +1,18 @@
 {
   "This is a header": {
-    "value": "Dr. Struessal",
+    "value": "Dies ist eine Kopf",
     "files": [
       "src/html/index.html"
     ]
   },
   "This is another paragraph": {
-    "value": "Auchtung! A paragraph!",
+    "value": "Dies ist ein weiterer Absatz",
+    "files": [
+      "src/html/index.html"
+    ]
+  },
+  "I remember meeting you on bleaker street": {
+    "value": "Ich erinnere mich, Sie kennen zu lernen auf düsterer Straße",
     "files": [
       "src/html/index.html"
     ]
